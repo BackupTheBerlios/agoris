@@ -25,6 +25,7 @@ private:
 public:
   Search();
   Search(brd::Board*);
+  double alphaBeta(brd::Board*, double, double, int depth = 5);
   double miniMax(brd::Board*, int depth = 3);
   void setBoard(brd::Board*);
 };

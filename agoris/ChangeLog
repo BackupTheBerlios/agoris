@@ -1,6 +1,11 @@
 agoris ChangeLog
 -=-=-=-=-=-=-=-=
 
+Sun Jul 22 21:57:54 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
+
+ * Added alpha-beta pruning to Search.cc
+
+
 Sat Jul 21 15:54:54 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
 
  * Added castling moves

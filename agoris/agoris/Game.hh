@@ -32,7 +32,7 @@ public:
   bool getAIColor(void);
   bool isValidMove(brd::Move);
   void makeMove(brd::Move);
-  brd::Move calculateMove(int depth = 3);
+  brd::Move calculateMove(int, int depth = 3);
   brd::Position getBoard(void);
   brd::Move getBestMove(void);
   int getCheckmate(void);

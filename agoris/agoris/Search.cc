@@ -37,6 +37,58 @@ void Search::setBoard(brd::Board* newBoard) {
 }
 
 
+double Search::alphaBeta(brd::Board* vBoard, double alpha, double beta, int depth = 5) {
+  if (depth <= 0) {
+    Eval AI;
+    return AI.doEval(vBoard);
+  }
+  
+  double score = 0;
+  double bestScore = -INFINITY;
+  int leftOuts = 0;
+  brd::Board newVBoard;
+  vBoard->genMoves();
+
+  for (unsigned int i = 0; i < vBoard->getMoves().size() && bestScore < beta; i++) {
+    // Do not allow illegal moves, such as those that lead right into check mate, etc.
+    if (!vBoard->isValidMove(vBoard->getArrayMove(i))) {
+      leftOuts++;
+      continue;
+    }
+    
+    vBoard->doArrayMove(i);
+    newVBoard.setBoard(vBoard->getBoard());
+    vBoard->undoMove();
+
+    if (vBoard->getTurn() == WHITE)
+      newVBoard.setTurn(BLACK);
+    else
+      newVBoard.setTurn(WHITE);
+    
+    if (bestScore > alpha)
+      alpha = bestScore;
+
+    score = -alphaBeta(&newVBoard, -beta, -alpha, depth - 1);
+
+    if (score > bestScore) {
+      bestScore = score;
+      vBoard->setBestMove(vBoard->getArrayMove(i));
+
+#ifdef DEBUG
+      cout << vBoard->getBestMove().source().x << ":" << vBoard->getBestMove().source().y << " - " <<
+	vBoard->getBestMove().dest().x << ":" << vBoard->getBestMove().dest().y << endl;
+#endif
+    }
+  }
+  
+  // See whether we are check mate
+  if (leftOuts == (int)vBoard->getMoves().size())
+    vBoard->setCheckmate(vBoard->getTurn());
+
+  return bestScore;
+}
+
+
 double Search::miniMax(brd::Board* vBoard, int depth = 3) {
   if (depth == 0) {
     Eval AI;

@@ -18,6 +18,7 @@
 
 #include "Game.hh"
 #include "Board.hh"
+#include "Square.hh"
 
 
 Game::Game() {
@@ -64,8 +65,19 @@ bool Game::isValidMove(brd::Move newMove) {
 }
 
 
-brd::Move Game::calculateMove(int depth = 3) {
-  boardSearch.miniMax(&theBoard, depth);
+//! Calculate best possible move with a given search depth and a given algorithm
+/** This function generates the best move for the computer player.
+ *  It lets you choose the algorithm to use and also what search depth to use.
+ *  @param algorithm 0 if minimax algorithm is prefered, 1 for alpha-beta pruning
+ *  @param depth is the search depth
+ *  @return The best possible move for the computer player
+ */
+brd::Move Game::calculateMove(int algorithm, int depth = 3) {
+  if (algorithm == 0)
+    boardSearch.miniMax(&theBoard, depth);
+  else
+    boardSearch.alphaBeta(&theBoard, -INFINITY, INFINITY, depth);
+
   return theBoard.getBestMove();
 }
 
