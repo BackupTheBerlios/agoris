@@ -1,6 +1,10 @@
 textchess ChangeLog
 -=-=-=-=-=-=-=-=-=-
 
+Sat Jul 28 13:23:20 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
+
+ * Added definitions MINIMAX and ALPHABETA
+
 Thu Jul 26 16:59:56 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
 
  * Added some debugging code and support for new Agoris functionality

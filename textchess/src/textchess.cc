@@ -30,6 +30,10 @@
 #include "config.h"
 #endif
 
+#define MINIMAX    0
+#define ALPHABETA  1
+
+
 using namespace std;       // Standard C++ namespace
 using namespace brd;       // Agoris namespace, defined in Board.hh
 
@@ -51,7 +55,7 @@ int main() {
   cout << "(To end the game enter 100 as X1 coordinate.)" << endl;
 
   // Set maximum search time for a move in seconds
-  myChessGame.setMaxTime(30);
+  myChessGame.setMaxTime(45);
 
   // Play the game until 666 was entered for the x1 coordinate
   while (x1 != 100) {
@@ -91,9 +95,9 @@ int main() {
     }
 
     // Let computer make his move:
-    // Use algorithm 1) alpha-beta pruning, or 0) minimax
+    // Use algorithm ALPHABETA alpha-beta pruning, or MINIMAX minimax
     // Use search depth of 5 (with a depth of 3 you usually get much faster results, but not as precise!)
-    compMove = myChessGame.calculateMove(1, 3);
+    compMove = myChessGame.calculateMove(ALPHABETA, 5);
     
     // Check for check mate
     if (myChessGame.getCheckmate() == BLACK) {
