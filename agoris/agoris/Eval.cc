@@ -110,22 +110,22 @@ double Eval::genMaterialScore(brd::Board *aBoard) {
     if ((int)curPos.square[i].getColor() == aBoard->getTurn()) {
       switch (curPos.square[i].getPiece()) {
       case PAWN:
-	curScore += PAWN_VAL;
+	curScore += aBoard->getPieceValue(PAWN);
 	break;
       case ROOK:
-	curScore += ROOK_VAL;
+	curScore += aBoard->getPieceValue(ROOK);
 	break;
       case KNIGHT:
-	curScore += KNIGHT_VAL;
+	curScore += aBoard->getPieceValue(KNIGHT);
 	break;
       case BISHOP:
-	curScore += BISHOP_VAL;
+	curScore += aBoard->getPieceValue(BISHOP);
 	break;
       case QUEEN:
-	curScore += QUEEN_VAL;
+	curScore += aBoard->getPieceValue(QUEEN);
 	break;
       case KING:
-	curScore += KING_VAL;
+	curScore += aBoard->getPieceValue(KING);
 	break;
       }
     }
@@ -156,7 +156,7 @@ double Eval::genCastlingScore(brd::Board *aBoard) {
  *  @return Returns the number of possible promotions times QUEEN_VAL (material value for the queen)
  */
 double Eval::genPromotionsScore(brd::Board *aBoard) {
-  return (double)(aBoard->getPromotions() * QUEEN_VAL);
+  return (double)(aBoard->getPromotions() * aBoard->getPieceValue(QUEEN));
 }
 
 

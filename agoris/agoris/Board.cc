@@ -72,6 +72,11 @@ namespace brd {
     curPos.blackPawns = 0; curPos.blackRooks = 0; curPos.blackKnights = 0; curPos.blackBishops = 0;
     curPos.blackQueens = 0; curPos.blackKing = 0; curPos.blackPieces = 0;
 
+    // Set up default piece values
+    pawnVal = 1; knightVal = 3; bishVal = 3.5;
+    rookVal = 5; queenVal = 10; kingVal = 10000;
+    infVal = 10000000;
+
     // Setup the mask and safetyBoard
     BitBoard bit = 1;
     for (unsigned long i = 0; i < 64; i++) {
@@ -1430,7 +1435,7 @@ namespace brd {
   }
 
 
-  //! Returns true if castling is still possible for WHITE side
+  //! Return true if castling is still possible for WHITE side
   /**
    *  @return True if castling is possible, false otherwise
    */
@@ -1441,7 +1446,7 @@ namespace brd {
       return false;
   }
 
-  //! Returns true if castling is still possible for BLACK side
+  //! Return true if castling is still possible for BLACK side
   /**
    *  @return True if castling is possible, false otherwise
    */
@@ -1452,4 +1457,63 @@ namespace brd {
       return false;
   }
 
+
+  //! Set the value for a chess piece on the board
+  /** This method is used to set a new value for a chess piece on the board.
+   *  @param piece is the piece to assign a new value to
+   *  @param val is the new value for that piece
+   */
+  void Board::setPieceValue(int piece, double val) {
+    switch (piece) {
+    case PAWN:
+      pawnVal = val;
+      break;
+    case ROOK:
+      rookVal = val;
+      break;
+    case BISHOP:
+      bishVal = val;
+      break;
+    case KNIGHT:
+      knightVal = val;
+      break;
+    case QUEEN:
+      queenVal = val;
+      break;
+    case KING:
+      kingVal = val;
+      break;
+    case INFINITY:
+      infVal = val;
+      break;
+    }
+  }
+
+
+  double Board::getPieceValue(int piece) {
+    switch (piece) {
+    case PAWN:
+      return pawnVal;
+      break;
+    case ROOK:
+      return rookVal;
+      break;
+    case BISHOP:
+      return bishVal;
+      break;
+    case KNIGHT:
+      return knightVal;
+      break;
+    case QUEEN:
+      return queenVal;
+      break;
+    case KING:
+      return kingVal;
+      break;    
+    case INFINITY:
+      return infVal;
+      break;
+    }
+  }
+  
 }

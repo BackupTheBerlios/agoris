@@ -28,15 +28,7 @@
 #ifndef EMPTY
 #define EMPTY    6
 #endif
-
-#define INFINITY     10000000
-#define PAWN_VAL     1
-#define KNIGHT_VAL   3
-#define BISHOP_VAL   3.5
-#define ROOK_VAL     5
-#define QUEEN_VAL    10
-#define KING_VAL     10000
-
+#define INFINITY 7
 
 class Square {
 private:

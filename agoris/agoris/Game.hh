@@ -19,6 +19,8 @@
 #include "Board.hh"
 #include "Search.hh"
 
+using namespace brd;
+
 class Game {
 private:
   brd::Board theBoard;
@@ -30,10 +32,24 @@ public:
   void nextTurn(void);
   void changeSides(void);
   bool getAIColor(void);
-  bool isValidMove(brd::Move);
-  void makeMove(brd::Move);
-  brd::Move calculateMove(int, int depth = 3);
-  brd::Position getBoard(void);
-  brd::Move getBestMove(void);
+  bool isValidMove(Move);
+  void makeMove(Move);
+  Move calculateMove(int, int depth = 3);
+  Position getBoard(void);
+  Move getBestMove(void);
   int getCheckmate(void);
+  
+  void setPawnValue(double val = 1);
+  void setKnightValue(double val = 3);
+  void setBishopValue(double val = 3.5);
+  void setRookValue(double val = 5);
+  void setQueenValue(double val = 10);
+  void setKingValue(double val = 10000);
+
+  double pawnVal(void);
+  double knightVal(void);
+  double bishopVal(void);
+  double rookVal(void);
+  double queenVal(void);
+  double kingVal(void);
 };

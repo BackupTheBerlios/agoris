@@ -162,6 +162,14 @@ namespace brd {
     int checks;
     int promotions;
 
+    double pawnVal;
+    double rookVal;
+    double knightVal;
+    double bishVal;
+    double queenVal;
+    double kingVal;
+    double infVal;
+
   protected:
     bool outOfBoundary(int, int);
     bool possiblePawnMove(int, int);
@@ -204,6 +212,8 @@ namespace brd {
     int getPromotions(void);
     bool isBlackCastlingPossible(void);
     bool isWhiteCastlingPossible(void);
+    void setPieceValue(int, double);
+    double getPieceValue(int);
     void printBitBoard(BitBoard);
   };
   

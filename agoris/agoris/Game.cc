@@ -95,3 +95,63 @@ brd::Move Game::getBestMove(void) {
 int Game::getCheckmate(void) {
   return theBoard.getCheckmate();
 }
+
+
+void Game::setPawnValue(double val = 1) {
+  theBoard.setPieceValue(PAWN, val);
+}
+
+
+void Game::setKnightValue(double val = 3) {
+  theBoard.setPieceValue(KNIGHT, val);
+}
+
+
+void Game::setBishopValue(double val = 3.5) {
+  theBoard.setPieceValue(BISHOP, val);
+}
+
+
+void Game::setRookValue(double val = 5) {
+  theBoard.setPieceValue(ROOK, val);
+}
+
+
+void Game::setQueenValue(double val = 10) {
+  theBoard.setPieceValue(QUEEN, val);
+}
+
+
+void Game::setKingValue(double val = 10000) {
+  theBoard.setPieceValue(KING, val);
+}
+
+
+double Game::pawnVal(void) {
+  return theBoard.getPieceValue(PAWN);
+}
+
+
+double Game::knightVal(void) {
+  return theBoard.getPieceValue(KNIGHT);
+}
+
+
+double Game::bishopVal(void) {
+  return theBoard.getPieceValue(BISHOP);
+}
+
+
+double Game::rookVal(void) {
+  return theBoard.getPieceValue(ROOK);
+}
+
+
+double Game::queenVal(void) {
+  return theBoard.getPieceValue(QUEEN);
+}
+
+
+double Game::kingVal(void) {
+  return theBoard.getPieceValue(KING);
+}

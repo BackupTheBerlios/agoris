@@ -44,7 +44,7 @@ double Search::alphaBeta(brd::Board* vBoard, double alpha, double beta, int dept
   }
   
   double score = 0;
-  double bestScore = -INFINITY;
+  double bestScore = -(vBoard->getPieceValue(INFINITY));
   int leftOuts = 0;
   brd::Board newVBoard;
   vBoard->genMoves();

@@ -1,5 +1,5 @@
 # Makefile.am: help build sources on mulitiple architectures 
-# $Id: Makefile.am,v 1.1 2001/07/16 19:10:06 baueran Exp $
+# $Id: Makefile.am,v 1.2 2001/07/25 15:07:27 baueran Exp $
 
 # Copyright (c) 2001  Andreas Bauer <baueran@in.tum.de>
 #
@@ -43,7 +43,7 @@ bin_SCRIPTS = agoris-config
 @MAINT@	cd $(top_srcdir)/doc ;\
 @MAINT@	${MAKE} doxygen
 
-@MAINT@alldist: man doxygen
+@MAINT@alldist: doxygen
 @MAINT@	${MAKE} distcheck
 @MAINT@	${MAKE} dist-shar
 @MAINT@	${MAKE} dist-zip

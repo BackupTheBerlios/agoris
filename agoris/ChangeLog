@@ -1,6 +1,11 @@
 agoris ChangeLog
 -=-=-=-=-=-=-=-=
 
+Wed Jul 25 17:03:55 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
+
+ * Changed all static piece values into methods in Board.cc
+ 
+
 Sun Jul 22 21:57:54 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
 
  * Added alpha-beta pruning to Search.cc
