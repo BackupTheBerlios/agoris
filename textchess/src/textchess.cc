@@ -77,9 +77,11 @@ int main() {
       continue;
     }
 
-    // Let computer make his move
-    compMove = myChessGame.calculateMove(1);          // Generate a move with 1) alpha-beta pruning or 0) minimax
-
+    // Let computer make his move:
+    // Use algorithm 1) alpha-beta pruning, or 0) minimax
+    // Use search depth of 5 (with a depth of 3 you usually get much faster results, but not as precise!)
+    compMove = myChessGame.calculateMove(1, 5);
+    
     // Check for check mate
     if (myChessGame.getCheckmate() == BLACK) {
       cout << "Computer is check mate. Congratulation, you won the game." << endl;
