@@ -1,9 +1,9 @@
 # agoris.spec: used for building rpms.
-# $Id: agoris.spec.in,v 1.1 2001/07/23 13:24:51 baueran Exp $
+# $Id: agoris.spec.in,v 1.2 2001/08/01 20:47:41 baueran Exp $
 # -*- rpm-spec -*-
 
 %define name agoris
-%define version 0.0.1
+%define version 0.0.2
 %define release 1
 
 Name: %{name}

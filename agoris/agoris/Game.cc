@@ -86,7 +86,7 @@ brd::Move Game::calculateMove(int algorithm, int depth = 3) {
 	 << endl
 #endif
       ;
-  }  
+  }
   else
     boardSearch.alphaBeta(&theBoard, -(theBoard.getPieceValue(INFINITY)), theBoard.getPieceValue(INFINITY), depth);
 

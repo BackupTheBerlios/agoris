@@ -1,6 +1,11 @@
 agoris NEWS
 -=-=-=-=-=-
 
+agoris 0.0.2 (still in development) [development release]
+
+ - Fixed a bug in the piece safety evaluation function
+
+
 agoris 0.0.1 (Mon Jul 23 11:35:42 CEST 2001)  [development release]
 
  - Initial release, library is still lacking a few features (see TODO)

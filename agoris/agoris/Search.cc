@@ -118,25 +118,24 @@ double Search::alphaBeta(brd::Board* vBoard, double alpha, double beta, int dept
 
 double Search::miniMax(brd::Board* vBoard, int depth = 3) {
   Eval AI;
+  brd::Board newVBoard;
+  double score = 0;
+  double bestScore = -(vBoard->getPieceValue(INFINITY));
+  int leftOuts = 0;
 
+  // Reached a leaf, do evaluation
   if (depth <= 0) {
     double currentScore = AI.doEval(vBoard);
-    // cout << currentScore << endl;
     return currentScore;
   }
 
-  double score = AI.doEval(vBoard);
-  double bestScore = -(vBoard->getPieceValue(INFINITY));
-  int leftOuts = 0;
-  
-  brd::Board newVBoard;
-
+  // Make sure it's the opponents turn when generating _new_ moves
   if (vBoard->getTurn() == WHITE)
     newVBoard.setTurn(BLACK);
   else
     newVBoard.setTurn(WHITE);
-  
-  // newVBoard.setTurn(vBoard->getTurn());
+
+  // Generate all possible moves in the current situation
   vBoard->genMoves();
   
   for (unsigned int i = 0; i < vBoard->getMoves().size(); i++) {
@@ -146,16 +145,11 @@ double Search::miniMax(brd::Board* vBoard, int depth = 3) {
       continue;
     }
     
+    // Make a move...
     vBoard->doArrayMove(i);
     newVBoard.setBoard(vBoard->getBoard());
 
-    /*
-      if (vBoard->getTurn() == WHITE)
-      newVBoard.setTurn(BLACK);
-      else
-      newVBoard.setTurn(WHITE);
-    */
-
+    // ...calculate the opponents score, according to the new board position
     score = -miniMax(&newVBoard, depth - 1);
     vBoard->undoMove();
     
@@ -163,17 +157,17 @@ double Search::miniMax(brd::Board* vBoard, int depth = 3) {
       bestScore = score;
       vBoard->setBestMove(vBoard->getArrayMove(i));
 
+#ifdef DEBUG
       cout << vBoard->getTurn() << ": "
 	   << vBoard->getBestMove().source().x << ":" << vBoard->getBestMove().source().y << " - "
 	   << vBoard->getBestMove().dest().x << ":" << vBoard->getBestMove().dest().y << " "
 	   << "(" << bestScore << ")" << endl;
-      
+#endif
+
       // Use timer
       if ( (clock.timeElapsed() >= maxTime) && (vBoard->getBestMove().source().x != 0 && vBoard->getBestMove().dest().x != 0) )
 	return bestScore;
     }
-    
-    // vBoard->undoMove();
   }
 
   // See whether we are check mate
