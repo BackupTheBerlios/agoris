@@ -1,6 +1,13 @@
 agoris ChangeLog
 -=-=-=-=-=-=-=-=
 
+Sat Jul 28 12:57:06 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
+
+ * The search algorithms now use proper values for infinity unlike
+   the last commits since version 0.0.1 in which I accidently
+   got this bug in
+
+
 Wed Jul 25 17:03:55 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
 
  * Changed all static piece values into methods in Board.cc

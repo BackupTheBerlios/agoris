@@ -80,7 +80,7 @@ brd::Move Game::calculateMove(int algorithm, int depth = 3) {
   if (algorithm == 0)
     boardSearch.miniMax(&theBoard, depth);
   else
-    boardSearch.alphaBeta(&theBoard, -INFINITY, INFINITY, depth);
+    boardSearch.alphaBeta(&theBoard, -(theBoard.getPieceValue(INFINITY)), theBoard.getPieceValue(INFINITY), depth);
 
   return theBoard.getBestMove();
 }

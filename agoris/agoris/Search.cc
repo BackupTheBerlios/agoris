@@ -116,13 +116,13 @@ double Search::alphaBeta(brd::Board* vBoard, double alpha, double beta, int dept
 
 
 double Search::miniMax(brd::Board* vBoard, int depth = 3) {
-  if (depth == 0) {
+  if (depth <= 0) {
     Eval AI;
     return AI.doEval(vBoard);
   }
 
   double score = 0;
-  double bestScore = -INFINITY;
+  double bestScore = -(vBoard->getPieceValue(INFINITY));
   int leftOuts = 0;
 
   brd::Board newVBoard;
