@@ -31,7 +31,7 @@ public:
   void changeSides(void);
   bool getAIColor(void);
   bool isValidMove(brd::Move);
-  int makeMove(brd::Move);
+  void makeMove(brd::Move);
   brd::Move calculateMove(int depth = 3);
   brd::Position getBoard(void);
   brd::Move getBestMove(void);

@@ -1,0 +1,13 @@
+agoris ChangeLog
+-=-=-=-=-=-=-=-=
+
+Thu Jul 19 11:38:21 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
+
+ * Added proper Doxygen source code documentation
+
+ * Seperated rule checking from move generation
+
+ * Added README, NEWS and ChangeLog to repository
+
+ * Added rule checking to Game.cc which should only be used to check
+   human players! Otherwise it's too time consuming.

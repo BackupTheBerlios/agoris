@@ -41,13 +41,26 @@ bool Game::getAIColor(void) {
 }
 
 
-int Game::makeMove(brd::Move newMove) {
-  return theBoard.makeMove(newMove);
+void Game::makeMove(brd::Move newMove) {
+  theBoard.makeMove(newMove);
 }
 
 
+//! Checks whether newMove is valid for the current player
 bool Game::isValidMove(brd::Move newMove) {
-  return theBoard.isValidMove(newMove);
+  if (theBoard.isValidMove(newMove)) {
+    brd::Board tempBoard;
+    tempBoard.setBoard(theBoard.getBoard());
+    tempBoard.setTurn(WHITE);
+    tempBoard.genMoves();
+
+    for (unsigned int i = 0; i < tempBoard.getMoves().size(); i++)
+      if (tempBoard.getArrayMove(i).source().x == newMove.source().x && tempBoard.getArrayMove(i).source().y == newMove.source().y &&
+	  tempBoard.getArrayMove(i).dest().x == newMove.dest().x && tempBoard.getArrayMove(i).dest().y == newMove.dest().y )
+	return true;
+  }    
+  
+  return false;
 }
 
 

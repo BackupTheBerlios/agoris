@@ -20,7 +20,9 @@
 #define __BOARD_H_
 
 #include <vector>
+extern "C" {
 #include <math.h>
+}
 #include "Square.hh"
 
 #define COL(x)  (x & 7)
@@ -33,10 +35,10 @@
 #endif
 #define BLACK 0
 
+using namespace std;
 
 namespace brd {
 
-  // I am on a 32-bit machine...
   typedef u_int64_t BitBoard;
   
   class BitBoardMove {
@@ -154,13 +156,13 @@ namespace brd {
     vector<BitBoardMove> allMoves;
     Position curPos;
     vector<Position> history;
-
-    // Some sort of an evaluation
     int safetyBoard[64];
     int checks;
 
   protected:
     bool outOfBoundary(int, int);
+    bool possiblePawnMove(int, int);
+    bool possiblePawnCapture(int, int);
     
   public:
     Board();
@@ -177,7 +179,7 @@ namespace brd {
     vector<BitBoardMove> genQueenCaptures(int);
     vector<BitBoardMove> genKingMoves(int);
     vector<BitBoardMove> genKingCaptures(int);
-    int makeMove(Move);
+    void makeMove(Move);
     bool isValidMove(Move);
     bool isCheckSituation(Move);
     void undoMove(void);
