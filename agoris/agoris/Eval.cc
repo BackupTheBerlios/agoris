@@ -57,21 +57,39 @@ double Eval::doEval(brd::Board* aBoard) {
       switch (curPos.square[i].getPiece()) {
       case PAWN:
 	curScore += genPawnScore(aBoard, i);
+#ifdef DEBUG
+  cout << "Pawn Mob.: " << curScore << endl;
+#endif
 	break;
       case ROOK:
 	curScore += genRookScore(aBoard, i);
+#ifdef DEBUG
+  cout << "Rook Mob.: " << curScore << endl;
+#endif
 	break;
       case KNIGHT:
 	curScore += genKnightScore(aBoard, i);
+#ifdef DEBUG
+  cout << "Knight Mob.: " << curScore << endl;
+#endif
 	break;
       case BISHOP:
 	curScore += genBishopScore(aBoard, i);
+#ifdef DEBUG
+  cout << "Bishop Mob.: " << curScore << endl;
+#endif
 	break;
       case QUEEN:
 	curScore += genQueenScore(aBoard, i);
+#ifdef DEBUG
+  cout << "Queen Mob.: " << curScore << endl;
+#endif
 	break;
       case KING:
 	curScore += genKingScore(aBoard, i);
+#ifdef DEBUG
+  cout << "King Mob.: " << curScore << endl;
+#endif
 	break;
       }
     }
@@ -79,18 +97,34 @@ double Eval::doEval(brd::Board* aBoard) {
 
   // Material score
   curScore += genMaterialScore(aBoard);
+#ifdef DEBUG
+  cout << "Material: " << curScore << endl;
+#endif
 
   // Piece safety
   curScore += genPieceSafetyScore(aBoard);
+#ifdef DEBUG
+  cout << "Safety: " << curScore << endl;
+#endif
 
   // Checks (has to be called AFTER piece safety and material score checks!)
   curScore += genChecksScore(aBoard);
+#ifdef DEBUG
+  cout << "Checks: " << curScore << endl;
+#endif
 
   // Score for possible pawn promotions
   curScore += genPromotionsScore(aBoard);
+#ifdef DEBUG
+  cout << "Promotions: " << curScore << endl;
+#endif
 
   // Score if castling is still possible
   curScore += genCastlingScore(aBoard);
+#ifdef DEBUG
+  cout << "Castling: " << curScore << endl;
+  cout << endl;
+#endif
 
   return curScore;
 }

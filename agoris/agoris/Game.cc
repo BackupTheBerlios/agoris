@@ -19,6 +19,8 @@
 #include "Game.hh"
 #include "Board.hh"
 #include "Square.hh"
+#include "Search.hh"
+#include "Eval.hh"
 
 
 Game::Game() {
@@ -73,12 +75,25 @@ bool Game::isValidMove(brd::Move newMove) {
  *  @return The best possible move for the computer player
  */
 brd::Move Game::calculateMove(int algorithm, int depth = 3) {
+  boardSearch.initTimer();
+
   if (algorithm == 0)
     boardSearch.miniMax(&theBoard, depth);
   else
     boardSearch.alphaBeta(&theBoard, -INFINITY, INFINITY, depth);
 
   return theBoard.getBestMove();
+}
+
+
+double Game::eval(void) {
+  Eval AI;
+  return AI.doEval(&theBoard);
+}
+
+
+void Game::setMaxTime(double time) {
+  boardSearch.setMaxTime(time);
 }
 
 

@@ -4,7 +4,15 @@ agoris ChangeLog
 Wed Jul 25 17:03:55 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
 
  * Changed all static piece values into methods in Board.cc
+
+ * Added Timer.cc and Timer.hh
+
+ * Fixed agoris/Makefile.am
  
+ * Fixed up header files, so they can be included several times (oops)
+
+ * Fixed up piece safety evaluation in Eval.cc
+
 
 Sun Jul 22 21:57:54 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
 

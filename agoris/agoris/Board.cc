@@ -269,15 +269,18 @@ namespace brd {
     int capLeft = 0, capRight = 0;
     vector<BitBoardMove> captures;
     BitBoardMove myMove;
+    BitBoard *myPieces;
     myMove.source = mask[pawnLocation];
 
     if (curPos.square[pawnLocation].getColor() == WHITE) {
       capLeft = -9;
       capRight = -7;
+      myPieces = &curPos.whitePieces;
     }
     else {
       capLeft = 7;
       capRight = 9;
+      myPieces = &curPos.blackPieces;
     }
       
     if (possiblePawnCapture(pawnLocation, capLeft)) {
@@ -299,10 +302,12 @@ namespace brd {
     }
 
     // Piece safety
-    if ( COL(pawnLocation) > 0 && (pawnLocation+capLeft >= 0) && (mask[pawnLocation+capLeft] & curPos.whitePieces) )
+    if ( COL(pawnLocation) > 0 && (pawnLocation+capLeft >= 0 && pawnLocation <= 63) && (mask[pawnLocation+capLeft] & *myPieces) ) {
       safetyBoard[pawnLocation+capLeft] += 100;
-    if ( COL(pawnLocation) < 7 && (pawnLocation+capRight >= 0) && (mask[pawnLocation+capRight] & curPos.whitePieces) )
+    }
+    if ( COL(pawnLocation) < 7 && (pawnLocation+capRight >= 0 && pawnLocation <=63) && (mask[pawnLocation+capRight] & *myPieces) ) {
       safetyBoard[pawnLocation+capRight] += 100;
+    }
 
     return captures;
   }
@@ -501,12 +506,17 @@ namespace brd {
     vector<BitBoardMove> captures;
     BitBoardMove myMove;
     BitBoard oponents = 0;
+    BitBoard *myPieces;
     myMove.source = mask[knightLocation];
 
-    if (curTurn == WHITE)
+    if (curTurn == WHITE) {
       oponents = curPos.blackPieces;
-    else
+      myPieces = &curPos.whitePieces;
+    } 
+    else {
       oponents = curPos.whitePieces;
+      myPieces = &curPos.blackPieces;
+    }
 
     for (int u = 0; u < 8; u++) {
       if ( knightLocation + knightPos[u] < 64 && knightLocation + knightPos[u] >= 0 ) {
@@ -527,7 +537,7 @@ namespace brd {
 	    captures.push_back(myMove);
 	  }
 	}
-	else if (mask[knightLocation+knightPos[u]] & oponents) {
+	else if (mask[knightLocation+knightPos[u]] & *myPieces) {
 	  if (!( (ROW(knightLocation) < 2 || COL(knightLocation) < 1) && knightPos[u] == -17 ) &&
 	      !( (ROW(knightLocation) > 5 || COL(knightLocation) > 6) && knightPos[u] ==  17 ) &&
 	      !( (ROW(knightLocation) < 2 || COL(knightLocation) > 6) && knightPos[u] == -15 ) &&
@@ -540,7 +550,7 @@ namespace brd {
 	}
       }
     }
-
+    
     return captures;
   }
 
@@ -1238,6 +1248,9 @@ namespace brd {
   //! Call this after every move a player has made to change turns
   void Board::nextTurn(void) {
     curTurn == WHITE ? curTurn = BLACK : curTurn = WHITE;
+
+    for (unsigned long i = 0; i < 64; i++)
+      safetyBoard[i] = 0;
   }
 
 
@@ -1394,6 +1407,10 @@ namespace brd {
    *  @return The safety board as integer pointer.
    */
   int* Board::getSafetyBoard(void) {
+    for (int i = 0; i < 64; i++)
+      cout << safetyBoard[i] << ", ";
+    cout << endl;
+    
     return safetyBoard;
   }
 
@@ -1514,6 +1531,8 @@ namespace brd {
       return infVal;
       break;
     }
+
+    return 0;
   }
-  
+
 }

@@ -16,16 +16,28 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
 // USA.
 
+#ifndef _SEARCH_HH_
+#define _SEARCH_HH_
+
 #include "Board.hh"
+#include "Timer.hh"
 
 class Search {
 private:
   brd::Board* theBoard;
+  Timer clock;
+  double maxTime;
+  int minDepth;
 
 public:
   Search();
   Search(brd::Board*);
+  void initTimer(void);
   double alphaBeta(brd::Board*, double, double, int depth = 5);
   double miniMax(brd::Board*, int depth = 3);
   void setBoard(brd::Board*);
+  void setMaxTime(double);
+  void setMinDepth(int);
 };
+
+#endif

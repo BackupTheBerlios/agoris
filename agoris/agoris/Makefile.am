@@ -1,5 +1,5 @@
 # Makefile.am: help build program sources
-# $Id: Makefile.am,v 1.1 2001/07/16 19:10:25 baueran Exp $
+# $Id: Makefile.am,v 1.2 2001/07/26 14:49:44 baueran Exp $
 
 # Copyright (c) 2001  Andreas Bauer <baueran@in.tum.de>
 #
@@ -23,17 +23,12 @@ AM_CXXFLAGS=-Wall
 
 lib_LTLIBRARIES = libagoris.la
 
-libagoris_la_SOURCES = Board.cc Square.cc Search.cc Game.cc Eval.cc\
-	Board.hh Square.hh Search.hh Game.hh Eval.hh
+libagoris_la_SOURCES = Board.cc Square.cc Search.cc Game.cc Eval.cc Timer.cc\
+	Board.hh Square.hh Search.hh Game.hh Eval.hh Timer.hh
 
 library_includedir = $(includedir)/agoris
-library_include_HEADERS = Board.hh Square.hh Search.hh Game.hh Eval.hh
+library_include_HEADERS = Board.hh Square.hh Search.hh Game.hh Eval.hh Timer.hh
 
-
-#bin_PROGRAMS = agoris 
-#agoris_SOURCES = Agoris.cc Board.cc Square.cc Search.cc Game.cc Eval.cc\
-#Board.hh Square.hh Search.hh Game.hh Eval.hh
-
-INCLUDES = -I$(includedir) -I$(top_srcdir)/src
+INCLUDES = -I$(includedir) -I$(top_srcdir)/agoris
 
 LIBS = @LIBS@

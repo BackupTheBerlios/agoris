@@ -16,6 +16,9 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
 // USA.
 
+#ifndef _GAME_HH_
+#define _GAME_HH_
+
 #include "Board.hh"
 #include "Search.hh"
 
@@ -35,10 +38,12 @@ public:
   bool isValidMove(Move);
   void makeMove(Move);
   Move calculateMove(int, int depth = 3);
+  double eval(void);
   Position getBoard(void);
   Move getBestMove(void);
   int getCheckmate(void);
-  
+  void setMaxTime(double);
+
   void setPawnValue(double val = 1);
   void setKnightValue(double val = 3);
   void setBishopValue(double val = 3.5);
@@ -53,3 +58,6 @@ public:
   double queenVal(void);
   double kingVal(void);
 };
+
+#endif
+

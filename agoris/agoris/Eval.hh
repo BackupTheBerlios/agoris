@@ -16,6 +16,9 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
 // USA.
 
+#ifndef __EVAL_HH_
+#define __EVAL_HH_
+
 #include "Board.hh"
 
 class Eval {
@@ -37,3 +40,5 @@ public:
   Eval();
   double doEval(brd::Board*);
 };
+
+#endif
