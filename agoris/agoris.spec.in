@@ -1,0 +1,58 @@
+# agoris.spec: used for building rpms.
+# $Id: agoris.spec.in,v 1.1 2001/07/23 13:24:51 baueran Exp $
+# -*- rpm-spec -*-
+
+%define name agoris
+%define version 0.0.1
+%define release 1
+
+Name: %{name}
+Version: %{version}
+Release: %{release}
+Summary: A chess game library.
+Copyright: GPL
+Group: Games 
+Source: %{name}-%{version}.tar.gz
+Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
+URL: http://agoris.berlios.de/
+Packager: Andreas Bauer <baueran@users.berlios.de> 
+
+%description
+Agoris is a simple and free chess library. Even though it was designed to
+run on Unix (-like) systems, it should compile just fine with any modern C++
+compiler on any platform. It is written in C++ and allows you to base your
+own chess games and front ends upon it. The library provides move generation,
+rule checking and various search algorithms.
+
+%prep
+%setup
+
+%build
+%configure
+make install-strip
+
+%install
+%makeinstall
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-, root, root)
+%doc AUTHORS COPYING ChangeLog INSTALL NEWS README TODO
+%{prefix}/lib/*.so.*
+
+%files	devel
+%defattr(-, root, root)
+%{prefix}/include/agoris/
+%{prefix}/lib/*.so
+%{prefix}/share/aclocal/agorislib.m4
+
+%changelog
+* Mon Jul 23 2001 Andreas Bauer <baueran@users.berlios.de>
+
+- Initial creation of rpm package
