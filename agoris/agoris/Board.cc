@@ -1407,9 +1407,11 @@ namespace brd {
    *  @return The safety board as integer pointer.
    */
   int* Board::getSafetyBoard(void) {
+#ifdef DEBUG
     for (int i = 0; i < 64; i++)
       cout << safetyBoard[i] << ", ";
     cout << endl;
+#endif
     
     return safetyBoard;
   }
