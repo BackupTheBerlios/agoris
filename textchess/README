@@ -1,0 +1,10 @@
+textchess README
+-=-=-=-=-=-=-=-=
+
+Textchess is a simple, text based chess game to demonstrate the use
+of the Agoris chess library. Agoris and Textchess are both written by
+Andreas Bauer and released under the terms of the GNU General Public
+License. For more information read the file COPYING, provided with this
+program.
+
+Enjoy!
