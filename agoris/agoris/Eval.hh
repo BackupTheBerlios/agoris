@@ -22,6 +22,7 @@ class Eval {
 private:
   brd::BitBoard mask[64];
   double genChecksScore(brd::Board*);
+  double genPromotionsScore(brd::Board*);
   double genMaterialScore(brd::Board*);
   double genPieceSafetyScore(brd::Board*);
   double genPawnScore(brd::Board*, int);

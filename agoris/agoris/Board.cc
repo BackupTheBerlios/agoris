@@ -66,7 +66,7 @@ namespace brd {
   /// The constructor initializes the chess board.
   Board::Board() {
     // Few init values first
-    checks = 0; checkmate = EMPTY; curTurn = WHITE;
+    checks = 0; checkmate = EMPTY; curTurn = WHITE; promotions = 0;
     curPos.whitePawns = 0; curPos.whiteRooks = 0; curPos.whiteKnights = 0; curPos.whiteBishops = 0;
     curPos.whiteQueens = 0; curPos.whiteKing = 0; curPos.whitePieces = 0;
     curPos.blackPawns = 0; curPos.blackRooks = 0; curPos.blackKnights = 0; curPos.blackBishops = 0;
@@ -150,6 +150,7 @@ namespace brd {
   void Board::genMoves(void) {
     vector<BitBoardMove> moveSet;
     allMoves.clear();                    // Clear the list of possible moves available for this particular board
+    promotions = 0;                      // Clear the number of possible pawn promotions
     checks = 0;                          // Clear the number of possible check situations for this particular board
     checkmate = EMPTY;                   // Clear the checkmate-flag for this particular board
 
@@ -215,7 +216,7 @@ namespace brd {
     BitBoardMove myMove;
     myMove.source = mask[pawnLocation];
     
-    if (getTurn() == WHITE) {
+    if (curPos.square[pawnLocation].getColor() == WHITE) {
       offset = -8;
       doubleOffset = -16;
     }
@@ -236,6 +237,13 @@ namespace brd {
       moves.push_back(myMove);
     }
     
+    // Check promotions
+    if ( (possiblePawnMove(pawnLocation, offset)) &&
+	 ( (curPos.square[pawnLocation].getColor() == WHITE && ROW(pawnLocation) == 1) ||
+	   (curPos.square[pawnLocation].getColor() == BLACK && ROW(pawnLocation) == 6) ) ) {
+      promotions++;
+    }
+
     return moves;
   }
 
@@ -256,7 +264,7 @@ namespace brd {
     BitBoardMove myMove;
     myMove.source = mask[pawnLocation];
 
-    if (getTurn() == WHITE) {
+    if (curPos.square[pawnLocation].getColor() == WHITE) {
       capLeft = -9;
       capRight = -7;
     }
@@ -274,6 +282,13 @@ namespace brd {
       myMove.dest = mask[pawnLocation+capRight];
       if (curPos.square[pawnLocation+capRight].getPiece() == KING) checks++;
       captures.push_back(myMove);
+    }
+
+    // Check promotions
+    if ( ( (possiblePawnCapture(pawnLocation, capLeft)) && (possiblePawnCapture(pawnLocation, capRight)) ) &&
+	 ( (curPos.square[pawnLocation].getColor() == WHITE && ROW(pawnLocation) == 1) ||
+	   (curPos.square[pawnLocation].getColor() == BLACK && ROW(pawnLocation) == 6) ) ) {
+      promotions++;
     }
 
     // Piece safety
@@ -864,7 +879,7 @@ namespace brd {
     // Store current position in the history
     history.push_back(curPos);
 
-    // Set new position
+    // Clear destination location
     if (movedColor == WHITE) {
       if (curPos.square[dest].getPiece() != EMPTY) {
 	curPos.blackPieces ^= mask[dest];
@@ -875,11 +890,28 @@ namespace brd {
 	curPos.blackBishops ^= mask[dest];
 	curPos.blackKnights ^= mask[dest];
       }
+    }
+    else {
+      if (curPos.square[dest].getPiece() != EMPTY) {
+	curPos.whitePieces ^= mask[dest];
+	curPos.whitePawns ^= mask[dest];
+	curPos.whiteQueens ^= mask[dest];
+	curPos.whiteKing ^= mask[dest];
+	curPos.whiteRooks ^= mask[dest];
+	curPos.whiteBishops ^= mask[dest];
+	curPos.whiteKnights ^= mask[dest];
+      }
+    }
 
+    // Set new position
+    if (movedColor == WHITE) {
       switch (movedPiece) {
       case PAWN:
 	curPos.whitePieces |= mask[dest];
-	curPos.whitePawns |= mask[dest];
+	if (ROW(dest) == 0)
+	  curPos.whiteQueens |= mask[dest];
+	else
+	  curPos.whitePawns |= mask[dest];
 	break;
       case ROOK:
 	curPos.whitePieces |= mask[dest];
@@ -904,20 +936,13 @@ namespace brd {
       }
     }
     else if (movedColor == BLACK) {
-      if (curPos.square[dest].getPiece() != EMPTY) {
-	curPos.whitePieces ^= mask[dest];
-	curPos.whitePawns ^= mask[dest];
-	curPos.whiteQueens ^= mask[dest];
-	curPos.whiteKing ^= mask[dest];
-	curPos.whiteRooks ^= mask[dest];
-	curPos.whiteBishops ^= mask[dest];
-	curPos.whiteKnights ^= mask[dest];
-      }
-
       switch (movedPiece) {
       case PAWN:
 	curPos.blackPieces |= mask[dest];
-	curPos.blackPawns |= mask[dest];
+	if (ROW(dest) == 7)
+	  curPos.blackQueens |= mask[dest];
+	else
+	  curPos.blackPawns |= mask[dest];
 	break;
       case ROOK:
 	curPos.blackPieces |= mask[dest];
@@ -942,7 +967,10 @@ namespace brd {
       }
     }
     curPos.square[dest].setColor(movedColor);
-    curPos.square[dest].setPiece(movedPiece);
+    if ( (curPos.square[source].getPiece() == PAWN) && ((getTurn() == WHITE && ROW(dest) == 0) || (getTurn() == BLACK && ROW(dest) == 7)) )
+      curPos.square[dest].setPiece(QUEEN);
+    else
+      curPos.square[dest].setPiece(movedPiece);
     
     // Clear old position
     if (movedColor == WHITE) {
@@ -1254,7 +1282,7 @@ namespace brd {
   }
 
   
-  //! Returns a pointer that contains information about protected pieces for the current player
+  //! Return a pointer that contains information about protected pieces for the current player
   /** This method gives information about the number of own pieces that are protected by other pieces.
    *  The data is stored in an array of integers where 100 or more points mean that a pawn is protecting this piece
    *  while small numbers greater than one mean that this particular piece is protected by non-pawn pieces,
@@ -1267,7 +1295,7 @@ namespace brd {
   }
 
 
-  //! Returns the number of checks for the current board
+  //! Return the number of checks for the current board
   /** 
    *  @return An integer that contains the number of checks for the current board
    */
@@ -1292,6 +1320,15 @@ namespace brd {
    */
   int Board::getCheckmate(void) {
     return checkmate;
+  }
+
+  
+  //! Return the number of possible pawn promotions for the current player on the board
+  /**
+   *  @return The number of possible pawn promotions on the board for the current player
+   */
+  int Board::getPromotions(void) {
+    return promotions;
   }
 
 }

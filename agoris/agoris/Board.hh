@@ -158,6 +158,7 @@ namespace brd {
     vector<Position> history;
     int safetyBoard[64];
     int checks;
+    int promotions;
 
   protected:
     bool outOfBoundary(int, int);
@@ -197,6 +198,7 @@ namespace brd {
     int getChecks(void);
     void setCheckmate(int);
     int getCheckmate(void);
+    int getPromotions(void);
     void printBitBoard(BitBoard);
   };
   

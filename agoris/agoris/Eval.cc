@@ -38,6 +38,7 @@ double Eval::doEval(brd::Board* aBoard) {
   double curScore = 0;
   brd::Position curPos = aBoard->getBoard();
 
+  // Mobility
   for (int i = 0; i < 64; i++) {
     if ((int)curPos.square[i].getColor() == aBoard->getTurn()) {
       switch (curPos.square[i].getPiece()) {
@@ -71,6 +72,9 @@ double Eval::doEval(brd::Board* aBoard) {
 
   // Checks (has to be called AFTER piece safety and material score checks!)
   curScore += genChecksScore(aBoard);
+
+  // Score for possible pawn promotions
+  curScore += genPromotionsScore(aBoard);
 
   return curScore;
 }
@@ -106,6 +110,11 @@ double Eval::genMaterialScore(brd::Board *aBoard) {
   }
 
   return curScore;
+}
+
+
+double Eval::genPromotionsScore(brd::Board *aBoard) {
+  return (double)(aBoard->getPromotions() * QUEEN_VAL);
 }
 
 

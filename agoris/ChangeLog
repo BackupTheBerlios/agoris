@@ -11,3 +11,7 @@ Thu Jul 19 11:38:21 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
 
  * Added rule checking to Game.cc which should only be used to check
    human players! Otherwise it's too time consuming.
+
+Fri Jul 20 21:17:49 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
+
+ * Added pawn promotions to the Board.cc and Eval.cc

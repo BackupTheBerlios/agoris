@@ -17,6 +17,7 @@
 // USA.
 
 #include <iostream>
+#include <string>
 #include "Search.hh"
 #include "Board.hh"
 #include "Eval.hh"
@@ -50,12 +51,12 @@ double Search::miniMax(brd::Board* vBoard, int depth = 3) {
   vBoard->genMoves();
   
   for (unsigned int i = 0; i < vBoard->getMoves().size(); i++) {
-    // Do not allow illegal moves, such as moves that lead right into check mate, etc.
+    // Do not allow illegal moves, such as those that lead right into check mate, etc.
     if (!vBoard->isValidMove(vBoard->getArrayMove(i))) {
       leftOuts++;
       continue;
     }
-
+    
     vBoard->doArrayMove(i);
     newVBoard.setBoard(vBoard->getBoard());
     
@@ -75,7 +76,7 @@ double Search::miniMax(brd::Board* vBoard, int depth = 3) {
   }
 
   // See whether we are check mate
-  if (leftOuts == vBoard->getMoves().size())
+  if (leftOuts == (int)vBoard->getMoves().size())
     vBoard->setCheckmate(vBoard->getTurn());
 
   return bestScore;
