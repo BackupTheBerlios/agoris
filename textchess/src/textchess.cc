@@ -26,7 +26,9 @@
 #include <agoris/Game.hh>
 
 // Local configuration
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 using namespace std;       // Standard C++ namespace
 using namespace brd;       // Agoris namespace, defined in Board.hh
@@ -48,6 +50,9 @@ int main() {
   cout << "Written by Andreas Bauer, Copyright (c) 2001" << endl;
   cout << "(To end the game enter 100 as X1 coordinate.)" << endl;
 
+  // Set maximum search time for a move in seconds
+  myChessGame.setMaxTime(30);
+
   // Play the game until 666 was entered for the x1 coordinate
   while (x1 != 100) {
 
@@ -56,6 +61,14 @@ int main() {
     // position of all pieces. We use that Position-object in our print(Position)
     // function to display the actual game onto the user's screen.
     print(myChessGame.getBoard());
+
+#ifdef DEBUG
+    // Print current board score
+    cout << "White score: " << myChessGame.eval() << endl;
+    myChessGame.nextTurn();
+    cout << "Black score: " << myChessGame.eval() << endl;
+    myChessGame.nextTurn();
+#endif
 
     // Get player to enter a move
     cout << "X1: "; cin >> x1; cout << "Y1: "; cin >> y1;
@@ -80,7 +93,7 @@ int main() {
     // Let computer make his move:
     // Use algorithm 1) alpha-beta pruning, or 0) minimax
     // Use search depth of 5 (with a depth of 3 you usually get much faster results, but not as precise!)
-    compMove = myChessGame.calculateMove(1, 5);
+    compMove = myChessGame.calculateMove(1, 3);
     
     // Check for check mate
     if (myChessGame.getCheckmate() == BLACK) {

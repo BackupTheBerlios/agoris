@@ -1,6 +1,10 @@
 textchess ChangeLog
 -=-=-=-=-=-=-=-=-=-
 
+Thu Jul 26 16:59:56 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
+
+ * Added some debugging code and support for new Agoris functionality
+
 Sun Jul 22 21:56:51 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
 
  * Can use alpha-beta pruning now
