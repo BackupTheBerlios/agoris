@@ -202,6 +202,8 @@ namespace brd {
     void setCheckmate(int);
     int getCheckmate(void);
     int getPromotions(void);
+    bool isBlackCastlingPossible(void);
+    bool isWhiteCastlingPossible(void);
     void printBitBoard(BitBoard);
   };
   

@@ -25,6 +25,7 @@ extern "C" {
 #include <math.h>
 }
 
+using namespace std;
 
 Eval::Eval() {
   brd::BitBoard bit = 1;
@@ -76,6 +77,9 @@ double Eval::doEval(brd::Board* aBoard) {
   // Score for possible pawn promotions
   curScore += genPromotionsScore(aBoard);
 
+  // Score if castling is still possible
+  curScore += genCastlingScore(aBoard);
+
   return curScore;
 }
 
@@ -110,6 +114,16 @@ double Eval::genMaterialScore(brd::Board *aBoard) {
   }
 
   return curScore;
+}
+
+
+double Eval::genCastlingScore(brd::Board *aBoard) {
+  if (aBoard->getTurn() == WHITE && aBoard->isWhiteCastlingPossible())
+    return 1;
+  else if (aBoard->getTurn() == BLACK && aBoard->isBlackCastlingPossible())
+    return 1;
+  else
+    return 0;
 }
 
 

@@ -1429,4 +1429,27 @@ namespace brd {
     return promotions;
   }
 
+
+  //! Returns true if castling is still possible for WHITE side
+  /**
+   *  @return True if castling is possible, false otherwise
+   */
+  bool Board::isWhiteCastlingPossible(void) {
+    if (curPos.whiteCastlingWest || curPos.whiteCastlingEast)
+      return true;
+    else
+      return false;
+  }
+
+  //! Returns true if castling is still possible for BLACK side
+  /**
+   *  @return True if castling is possible, false otherwise
+   */
+  bool Board::isBlackCastlingPossible(void) {
+    if (curPos.blackCastlingWest || curPos.blackCastlingEast)
+      return true;
+    else
+      return false;
+  }
+
 }
