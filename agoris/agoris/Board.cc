@@ -31,8 +31,7 @@ namespace brd {
 
   /// Constructor, set original and destination locations to zero.
   BitBoardMove::BitBoardMove() {
-    source = 0;
-    dest = 0;
+    source = 0; dest = 0;
     score = 0;
   }
 
@@ -66,6 +65,7 @@ namespace brd {
   /// The constructor initializes the chess board.
   Board::Board() {
     // Few init values first
+    curPos.whiteCastlingWest = true; curPos.whiteCastlingEast = true; curPos.blackCastlingWest = true; curPos.blackCastlingEast = true;
     checks = 0; checkmate = EMPTY; curTurn = WHITE; promotions = 0;
     curPos.whitePawns = 0; curPos.whiteRooks = 0; curPos.whiteKnights = 0; curPos.whiteBishops = 0;
     curPos.whiteQueens = 0; curPos.whiteKing = 0; curPos.whitePieces = 0;
@@ -196,6 +196,8 @@ namespace brd {
 	  moveSet = genKingMoves(i);
 	  allMoves.insert(allMoves.end(), moveSet.begin(), moveSet.end());
 	  moveSet = genKingCaptures(i);
+	  allMoves.insert(allMoves.end(), moveSet.begin(), moveSet.end());
+	  moveSet = genCastlingMoves(i);
 	  allMoves.insert(allMoves.end(), moveSet.begin(), moveSet.end());
 	  break;
 	}
@@ -792,6 +794,44 @@ namespace brd {
   }
 
 
+  /** This method generates a list of possible castlings for a king on location kingLocation.
+   *  @param kingLocation an integer that represents the current king location on a bit board
+   *  @return a vector containing the list of possible king castling moves
+   */
+  vector<BitBoardMove> Board::genCastlingMoves(int kingLocation) {
+    vector<BitBoardMove> castlings;
+    BitBoardMove myMove;
+
+    // We only generate the according 2-field move for the king and leave the move of the rook up to makeMove()
+    if ( (curPos.square[kingLocation].getColor() == BLACK) && (curPos.blackCastlingEast || curPos.blackCastlingWest) ) {
+      if (curPos.square[1].getColor() == EMPTY && curPos.square[2].getColor() == EMPTY && curPos.square[3].getColor() == EMPTY && curPos.blackCastlingWest) {
+	myMove.source = mask[kingLocation];
+	myMove.dest = mask[2];
+	castlings.push_back(myMove);
+      }
+      else if (curPos.square[5].getColor() == EMPTY && curPos.square[6].getColor() == EMPTY && curPos.blackCastlingEast) {
+	myMove.source = mask[kingLocation];
+	myMove.dest = mask[6];
+	castlings.push_back(myMove);
+      }
+    }
+    else if ( (curPos.square[kingLocation].getColor() == WHITE) && (curPos.whiteCastlingEast || curPos.whiteCastlingWest) ) {
+      if (curPos.square[57].getColor() == EMPTY && curPos.square[58].getColor() == EMPTY && curPos.square[59].getColor() == EMPTY && curPos.whiteCastlingWest) {
+	myMove.source = mask[kingLocation];
+	myMove.dest = mask[58];
+	castlings.push_back(myMove);
+      }
+      else if (curPos.square[61].getColor() == EMPTY && curPos.square[62].getColor() == EMPTY && curPos.whiteCastlingEast) {
+	myMove.source = mask[kingLocation];
+	myMove.dest = mask[62];
+	castlings.push_back(myMove);
+      }      
+    }
+
+    return castlings;
+  }
+  
+
   //! Check whether the chess piece on a certain location can move by offset bits.
   /** This method checks whether it is possible for the chess piece on a given location, to move
    *  over the current bit board by offset bits.
@@ -932,6 +972,29 @@ namespace brd {
       case KING:
 	curPos.whitePieces |= mask[dest];
 	curPos.whiteKing |= mask[dest];
+	
+	// Check if king is doing castling move, i.e. king moves by 2 bits on the board
+	if (dest - source == 2) {               // East
+	  curPos.whitePieces |= mask[61];
+	  curPos.whiteRooks |= mask[61];
+	  curPos.whiteRooks ^= mask[63];
+	  curPos.whitePieces ^= mask[63];
+	  curPos.square[63].setPiece(EMPTY);
+	  curPos.square[63].setColor(EMPTY);
+	  curPos.square[61].setPiece(ROOK);
+	  curPos.square[61].setColor(WHITE);
+	}
+	else if (dest - source == -2) {         // West
+	  curPos.whitePieces |= mask[59];
+	  curPos.whiteRooks |= mask[59];
+	  curPos.whiteRooks ^= mask[56];
+	  curPos.whitePieces ^= mask[56];
+	  curPos.square[56].setPiece(EMPTY);
+	  curPos.square[56].setColor(EMPTY);
+	  curPos.square[59].setPiece(ROOK);
+	  curPos.square[59].setColor(WHITE);
+	}
+
 	break;
       }
     }
@@ -963,6 +1026,29 @@ namespace brd {
       case KING:
 	curPos.blackPieces |= mask[dest];
 	curPos.blackKing |= mask[dest];
+
+	// Check if king is doing castling move, i.e. king moves by 2 bits on the board
+	if (dest - source == 2) {               // East
+	  curPos.blackPieces |= mask[5];
+	  curPos.blackRooks |= mask[5];
+	  curPos.blackRooks ^= mask[7];
+	  curPos.blackPieces ^= mask[7];
+	  curPos.square[7].setPiece(EMPTY);
+	  curPos.square[7].setColor(EMPTY);
+	  curPos.square[5].setPiece(ROOK);
+	  curPos.square[5].setColor(BLACK);
+	}
+	else if (dest - source == -2) {         // West
+	  curPos.blackPieces |= mask[3];
+	  curPos.blackRooks |= mask[3];
+	  curPos.blackRooks ^= mask[0];
+	  curPos.blackPieces ^= mask[0];
+	  curPos.square[0].setPiece(EMPTY);
+	  curPos.square[0].setColor(EMPTY);
+	  curPos.square[3].setPiece(ROOK);
+	  curPos.square[3].setColor(BLACK);
+	}
+
 	break;
       }
     }
@@ -980,6 +1066,10 @@ namespace brd {
 	curPos.whitePawns ^= mask[source];
 	break;
       case ROOK:
+	if (ROW(source) == 7 && COL(source) == 0)
+	  curPos.whiteCastlingWest = false;
+	else if (ROW(source) == 7 && COL(source) == 7)
+	  curPos.whiteCastlingEast = false;
 	curPos.whitePieces ^= mask[source];
 	curPos.whiteRooks ^= mask[source];
 	break;
@@ -996,6 +1086,8 @@ namespace brd {
 	curPos.whiteQueens ^= mask[source];
 	break;
       case KING:
+	curPos.whiteCastlingEast = false;
+	curPos.whiteCastlingWest = false;
 	curPos.whitePieces ^= mask[source];
 	curPos.whiteKing ^= mask[source];
 	break;
@@ -1008,6 +1100,10 @@ namespace brd {
 	curPos.blackPawns ^= mask[source];
 	break;
       case ROOK:
+	if (ROW(source) == 0 && COL(source) == 0)
+	  curPos.blackCastlingWest = false;
+	else if (ROW(source) == 0 && COL(source) == 7)
+	  curPos.blackCastlingEast = false;
 	curPos.blackPieces ^= mask[source];
 	curPos.blackRooks ^= mask[source];
 	break;
@@ -1024,6 +1120,8 @@ namespace brd {
 	curPos.blackQueens ^= mask[source];
 	break;
       case KING:
+	curPos.blackCastlingEast = false;
+	curPos.blackCastlingWest = false;
 	curPos.blackPieces ^= mask[source];
 	curPos.blackKing ^= mask[source];
 	break;

@@ -83,6 +83,8 @@ namespace brd {
     BitBoard whiteBishops;
     BitBoard whiteQueens;
     BitBoard whiteKing;
+    bool whiteCastlingWest, whiteCastlingEast;
+    bool blackCastlingEast, blackCastlingWest;
   };
 
   const char pieceChar[6] = { 'P', 'N', 'B', 'R', 'Q', 'K' };
@@ -180,6 +182,7 @@ namespace brd {
     vector<BitBoardMove> genQueenCaptures(int);
     vector<BitBoardMove> genKingMoves(int);
     vector<BitBoardMove> genKingCaptures(int);
+    vector<BitBoardMove> genCastlingMoves(int);
     void makeMove(Move);
     bool isValidMove(Move);
     bool isCheckSituation(Move);
