@@ -1,6 +1,8 @@
 agoris TODO
 -=-=-=-=-=-
 
+- Implement time-out for move generation (maybe check every 10th move?)
+
 - En passant captures
 
 - Detect chess mate for computer player (not only human opponent

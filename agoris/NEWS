@@ -1,6 +1,6 @@
 agoris NEWS
 -=-=-=-=-=-
 
-agoris 0.0.1 (still in development)
+agoris 0.0.1 (Mon Jul 23 11:35:42 CEST 2001)  [development release]
 
- - Initial release
+ - Initial release, library is still lacking a few features (see TODO)

@@ -1,2 +1,23 @@
 agoris README
 -=-=-=-=-=-=-
+
+Agoris is a simple and free chess library. Even though it was designed to run
+on Unix (-like) systems, it should compile just fine with any modern C++
+compiler on any platform. It is written in C++ and allows you to base your own
+chess games and front ends upon it. The library provides move generation, rule
+checking and various search algorithms.
+
+More than anything this code was written to explain how chess programs work
+internally and also to demonstrate one possible way of implementing some
+theories of board game programming. Good human players should be able to defeat
+the strategies of Agoris (and so will strong computerized opponents, such as
+KnightCap, Crafty or TSCP), but the focus of this work is on education rather
+than complicated optimization.
+
+Agoris is released under the terms of the GNU General Public License. It was
+written from scratch and is maintained by Andreas Bauer. For more information,
+see the README and COPYING documents provided with the Agoris library.
+
+-- 
+ATTENTION!!   This is a development release of Agoris (see TODO). Do not expect
+to have hours of challenging chess tournaments with this piece of software yet.

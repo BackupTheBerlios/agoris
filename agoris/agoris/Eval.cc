@@ -27,6 +27,7 @@ extern "C" {
 
 using namespace std;
 
+//! Standard constructor
 Eval::Eval() {
   brd::BitBoard bit = 1;
  
@@ -35,6 +36,17 @@ Eval::Eval() {
 }
 
 
+//! Evaluate current board situation for current player
+/** This method returns a score associated with the board situation.
+ *  It considers material values, piece safety, check possibilities, etc.
+ *  @param aBoard is a pointer to the current chess board
+ *  @return The score associated with the current game situation, seen from the current player's viewpoint
+ *  @see genMaterialScore()
+ *  @see genPieceSafetyScore()
+ *  @see genChecksScore()
+ *  @see genPromotionsScore()
+ *  @see genCastlingScore()
+ */
 double Eval::doEval(brd::Board* aBoard) {
   double curScore = 0;
   brd::Position curPos = aBoard->getBoard();
@@ -84,6 +96,12 @@ double Eval::doEval(brd::Board* aBoard) {
 }
 
 
+//! Generate material score for the current player
+/** This method evaluates the material score for the current player. It adds material values for each piece
+ *  and returns the total score.
+ *  @param aBoard is a pointer to the current chess board
+ *  @return The material score
+ */
 double Eval::genMaterialScore(brd::Board *aBoard) {
   double curScore = 0;
   brd::Position curPos = aBoard->getBoard();
@@ -117,6 +135,11 @@ double Eval::genMaterialScore(brd::Board *aBoard) {
 }
 
 
+//! Generate score for castling possbility
+/** This method returns a positive score if castling is still possible
+ *  @param aBoard is a pointer to the current chess board
+ *  @return Returns 1 if castling is possible, 0 otherwise
+ */
 double Eval::genCastlingScore(brd::Board *aBoard) {
   if (aBoard->getTurn() == WHITE && aBoard->isWhiteCastlingPossible())
     return 1;
@@ -127,16 +150,32 @@ double Eval::genCastlingScore(brd::Board *aBoard) {
 }
 
 
+//! Generate score for pawn promotions
+/** This method returns a positive score if promotions are possible.
+ *  @param aBoard is a pointer to the current chess board
+ *  @return Returns the number of possible promotions times QUEEN_VAL (material value for the queen)
+ */
 double Eval::genPromotionsScore(brd::Board *aBoard) {
   return (double)(aBoard->getPromotions() * QUEEN_VAL);
 }
 
 
+//! Generate score for possible checks
+/**
+ *  @param aBoard is a pointer to the current chess board
+ *  @return Returns the number of possible checks
+ */
 double Eval::genChecksScore(brd::Board *aBoard) {
   return aBoard->getChecks();
 }
 
 
+//! Generate score for piece safety
+/** This method returns a positive score if own pieces are protected by own pieces.
+ *  It adds a special bonus if it's a pawn that protects another piece.
+ *  @param aBoard is a pointer to the current chess board
+ *  @return Returns the score for protected own pieces
+ */
 double Eval::genPieceSafetyScore(brd::Board *aBoard) {
   double score = 0;
   int* safetyBoard = aBoard->getSafetyBoard();
