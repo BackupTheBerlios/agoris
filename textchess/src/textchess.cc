@@ -78,7 +78,7 @@ int main() {
     }
 
     // Let computer make his move
-    compMove = myChessGame.calculateMove();           // Generate a move
+    compMove = myChessGame.calculateMove(1);          // Generate a move with 1) alpha-beta pruning or 0) minimax
 
     // Check for check mate
     if (myChessGame.getCheckmate() == BLACK) {

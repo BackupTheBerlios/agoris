@@ -1,6 +1,10 @@
 textchess ChangeLog
 -=-=-=-=-=-=-=-=-=-
 
+Sun Jul 22 21:56:51 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
+
+ * Can use alpha-beta pruning now
+
 Fri Jul 20 17:58:52 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
 
  * Added rule checking to the game
