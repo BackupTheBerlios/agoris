@@ -77,8 +77,16 @@ bool Game::isValidMove(brd::Move newMove) {
 brd::Move Game::calculateMove(int algorithm, int depth = 3) {
   boardSearch.initTimer();
 
-  if (algorithm == 0)
-    boardSearch.miniMax(&theBoard, depth);
+  if (algorithm == 0) {
+#ifdef DEBUG
+    cout << "Score:" <<
+#endif
+      boardSearch.miniMax(&theBoard, depth)
+#ifdef DEBUG
+	 << endl
+#endif
+      ;
+  }  
   else
     boardSearch.alphaBeta(&theBoard, -(theBoard.getPieceValue(INFINITY)), theBoard.getPieceValue(INFINITY), depth);
 

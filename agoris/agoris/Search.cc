@@ -45,7 +45,7 @@ void Search::initTimer(void) {
 
 
 double Search::alphaBeta(brd::Board* vBoard, double alpha, double beta, int depth = 5) {
-  double infinity = vBoard->getPieceValue(INFINITY);
+  const double infinity = vBoard->getPieceValue(INFINITY);
   double score = 0, bestScore = -infinity;
   int leftOuts = 0;
   brd::Board newVBoard;
@@ -86,7 +86,6 @@ double Search::alphaBeta(brd::Board* vBoard, double alpha, double beta, int dept
 
     score = -alphaBeta(&newVBoard, -alpha-1, -alpha, depth - 1);
     
-
     // score = -alphaBeta(&newVBoard, -beta, -alpha, depth - 1);
 
     if (score > alpha && score < beta)
@@ -101,10 +100,12 @@ double Search::alphaBeta(brd::Board* vBoard, double alpha, double beta, int dept
 	vBoard->getBestMove().dest().x << ":" << vBoard->getBestMove().dest().y << endl;
 #endif
     }
-
-    if (bestScore >= beta) { // Cut off
+    
+    /*
+      if (bestScore >= beta) { // Cut off
       vBoard->setBestMove(vBoard->getArrayMove(i));
-    }
+      }
+    */
   }
   
   // See whether we are check mate
@@ -116,16 +117,26 @@ double Search::alphaBeta(brd::Board* vBoard, double alpha, double beta, int dept
 
 
 double Search::miniMax(brd::Board* vBoard, int depth = 3) {
+  Eval AI;
+
   if (depth <= 0) {
-    Eval AI;
-    return AI.doEval(vBoard);
+    double currentScore = AI.doEval(vBoard);
+    // cout << currentScore << endl;
+    return currentScore;
   }
 
-  double score = 0;
+  double score = AI.doEval(vBoard);
   double bestScore = -(vBoard->getPieceValue(INFINITY));
   int leftOuts = 0;
-
+  
   brd::Board newVBoard;
+
+  if (vBoard->getTurn() == WHITE)
+    newVBoard.setTurn(BLACK);
+  else
+    newVBoard.setTurn(WHITE);
+  
+  // newVBoard.setTurn(vBoard->getTurn());
   vBoard->genMoves();
   
   for (unsigned int i = 0; i < vBoard->getMoves().size(); i++) {
@@ -137,24 +148,32 @@ double Search::miniMax(brd::Board* vBoard, int depth = 3) {
     
     vBoard->doArrayMove(i);
     newVBoard.setBoard(vBoard->getBoard());
-    
-    if (vBoard->getTurn() == WHITE)
+
+    /*
+      if (vBoard->getTurn() == WHITE)
       newVBoard.setTurn(BLACK);
-    else
+      else
       newVBoard.setTurn(WHITE);
+    */
 
     score = -miniMax(&newVBoard, depth - 1);
+    vBoard->undoMove();
     
     if (score > bestScore) {
       bestScore = score;
       vBoard->setBestMove(vBoard->getArrayMove(i));
 
+      cout << vBoard->getTurn() << ": "
+	   << vBoard->getBestMove().source().x << ":" << vBoard->getBestMove().source().y << " - "
+	   << vBoard->getBestMove().dest().x << ":" << vBoard->getBestMove().dest().y << " "
+	   << "(" << bestScore << ")" << endl;
+      
       // Use timer
       if ( (clock.timeElapsed() >= maxTime) && (vBoard->getBestMove().source().x != 0 && vBoard->getBestMove().dest().x != 0) )
 	return bestScore;
     }
     
-    vBoard->undoMove();
+    // vBoard->undoMove();
   }
 
   // See whether we are check mate
