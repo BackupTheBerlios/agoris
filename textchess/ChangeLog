@@ -1,0 +1,6 @@
+textchess ChangeLog
+-=-=-=-=-=-=-=-=-=-
+
+Fri Jul 20 17:58:52 CEST 2001  Andreas Bauer <baueran@users.berlios.de>
+
+ * Added rule checking to the game
